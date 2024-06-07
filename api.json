@@ -1,0 +1,236 @@
+{
+	"info": {
+		"_postman_id": "0229f38e-799b-44c6-b1d7-dc93f5e44e2e",
+		"name": "API Libaray",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9647607"
+	},
+	"item": [
+		{
+			"name": "AddBook",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"try {",
+							"",
+							" pm.expect(response.Msg).contains(\"Added\");",
+							"}",
+							"catch( error ){",
+							"    cleanUp();",
+							"}",
+							"",
+							"function cleanUp(){",
+							"    const Id = response.ID;",
+							"    console.log(Id);",
+							"     pm.collectionVariables.set(\"ID\", Id);",
+							"    postman.setNextRequest(\"Delete\" );",
+							"}",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const global = pm.globals.get(\"global\");",
+							"const ranIsbn = pm.variables.replaceIn('{{$randomInt}}');",
+							"const ranaisle = pm.variables.replaceIn('{{$randomInt}}');",
+							"pm.collectionVariables.set(\"isbn\", global + ranIsbn);",
+							"pm.collectionVariables.set(\"aisle\", ranaisle);",
+							"pm.collectionVariables.set(\"author\", pm.iterationData.get(\"author\"));",
+							"pm.collectionVariables.set(\"name\", pm.iterationData.get(\"name\"));",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"name\":\"shiirn\",\n\"isbn\":\"{{isbn}}\",\n\"aisle\":\"{{aisle}}\",\n\"author\":\"test\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "html"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rahulshettyacademy.com/Library/Addbook.php",
+					"protocol": "https",
+					"host": [
+						"rahulshettyacademy",
+						"com"
+					],
+					"path": [
+						"Library",
+						"Addbook.php"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetBook",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();",
+							"",
+							"console.log(response[0].author);",
+							"pm.test(\"validation\", function(){",
+							"    pm.response.to.have.status(200);",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://rahulshettyacademy.com/Library/GetBook.php?ID={{ID}}",
+					"protocol": "https",
+					"host": [
+						"rahulshettyacademy",
+						"com"
+					],
+					"path": [
+						"Library",
+						"GetBook.php"
+					],
+					"query": [
+						{
+							"key": "ID",
+							"value": "{{ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();",
+							"pm.test(\"validation\", function(){",
+							"",
+							"//pm.expect(pm.response.responseTime).to.below(2000);",
+							"pm.expect(pm.response.headers.get(\"Connection\")).to.contain(\"Keep-Alive\");",
+							"",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n \n\"ID\" : \"{{ID}}\"\n \n} \n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://rahulshettyacademy.com/Library/DeleteBook.php",
+					"protocol": "https",
+					"host": [
+						"rahulshettyacademy",
+						"com"
+					],
+					"path": [
+						"Library",
+						"DeleteBook.php"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "isbn",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "aisle",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "author",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "flag",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
